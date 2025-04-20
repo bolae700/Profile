@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pavly Emad - Magic Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sky-blue: #89CFF0;
+            --dark-blue: #1A237E;
+            --accent-blue: #4A90E2;
+            --light-gray: #F5F7FA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--sky-blue), var(--dark-blue));
+            overflow: hidden;
+        }
+
+        .floating-shapes div {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 30s infinite linear;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 100px solid var(--accent-blue);
+        }
+
+        .square {
+            width: 100px;
+            height: 100px;
+            background: var(--sky-blue);
+            transform: rotate(45deg);
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--dark-blue);
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            25% { transform: translate(150px, 150px) rotate(90deg) scale(1.1); }
+            50% { transform: translate(300px, -80px) rotate(180deg) scale(0.9); }
+            75% { transform: translate(-150px, 200px) rotate(270deg) scale(1.05); }
+            100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.97);
+            width: 500px;
+            height: 650px;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            border: 3px solid var(--dark-blue);
+            z-index: 2;
+        }
+
+        .header-design {
+            height: 90px;
+            background: linear-gradient(45deg, var(--dark-blue), var(--accent-blue));
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .status-text {
+            color: var(--dark-blue);
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 auto 35px;
+            width: fit-content;
+            padding: 8px 25px;
+            border: 2px solid var(--accent-blue);
+            border-radius: 30px;
+            transform: translateY(20px);
+        }
+
+        .status-text i {
+            color: var(--accent-blue);
+            font-size: 0.9em;
+        }
+
+        .tabs-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(45deg, var(--dark-blue), var(--accent-blue));
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--accent-blue), var(--sky-blue));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 8px 20px rgba(26, 35, 126, 0.35);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(45deg, var(--accent-blue), var(--sky-blue));
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(74, 144, 226, 0.4);
+        }
+
+        .tab-content {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            min-height: 420px;
+            padding: 0 20px 20px;
+            transform: translateY(20px);
+        }
+
+        .tab-content.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .profile-pic {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            border: 4px solid var(--dark-blue);
+            object-fit: cover;
+            margin: 10px auto 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .friends-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            padding: 15px 20px;
+        }
+
+        .friend-card {
+            background: white;
+            border-radius: 15px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .friend-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .friend-card img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border: 2px solid var(--accent-blue);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            padding: 15px 20px;
+        }
+
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+
+        .video-container {
+            padding: 0 20px 20px;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 280px;
+            border-radius: 15px;
+            border: 2px solid var(--dark-blue);
+        }
+
+        .image-popup {
+            position: fixed;
+            max-width: 80%;
+            max-height: 80%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: 0.3s;
+            z-index: 1000;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        .image-popup.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        @media (max-width: 600px) {
+            .main-container {
+                width: 95%;
+                height: 90vh;
+            }
+            
+            .friends-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-text {
+                font-size: 0.9rem;
+                padding: 6px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="triangle" style="top:10%; left:5%"></div>
+        <div class="square" style="top:80%; left:85%"></div>
+        <div class="circle" style="top:30%; left:92%"></div>
+        <div class="circle" style="top:60%; left:10%"></div>
+        <div class="triangle" style="top:45%; left:70%"></div>
+    </div>
+
+    <div class="main-container">
+        <div class="header-design"></div>
+        
+        <nav class="tabs-nav">
+            <button class="tab-btn active" data-tab="home">Home</button>
+            <button class="tab-btn" data-tab="gallery">Gallery</button>
+            <button class="tab-btn" data-tab="friends">Friends</button>
+            <button class="tab-btn" data-tab="video">Video</button>
+        </nav>
+
+        <div class="status-text">
+            <i class="fas fa-heart"></i>
+            GOD IS LOVE
+            <i class="fas fa-heart"></i>
+        </div>
+
+        <div class="tab-content active" id="home-content">
+            <div class="profile-section">
+                <img src="https://i.ibb.co/pXfwCcv/2d79b46de2deb3744fd330d815b76751.jpg" 
+                     alt="Pavly Emad" 
+                     class="profile-pic">
+                <h1 style="color: var(--dark-blue); margin: 10px 0; text-align: center;">Pavly Emad</h1>
+                <p style="color: var(--accent-blue); font-size: 1rem; text-align: center; line-height: 1.5;">
+                    📍 Texas, USA<br>
+                    🎂 33 years
+                </p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="gallery-content">
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/300/200?random=1" alt="Gallery Image 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/300/200?random=2" alt="Gallery Image 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/300/200?random=3" alt="Gallery Image 3">
+                </div>
+            </div>
+        </div>
+
+<div class="tab-content" id="friends-content">
+    <div class="friends-grid">
+        <div class="friend-card">
+            <h4>Leader</h4>
+        </div>
+        <div class="friend-card">
+            <h4>Dolly</h4>
+        </div>
+        <div class="friend-card">
+            <h4>Mark</h4>
+        </div>
+        <div class="friend-card">
+            <h4>Ramiz</h4>
+        </div>
+        <div class="friend-card">
+            <h4>Karim</h4>
+        </div>
+    </div>
+</div>
+
+        <div class="tab-content" id="video-content">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/rl_WiB0_O_Q" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay"></div>
+    <img src="" class="image-popup">
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.classList.contains('active')) return;
+
+                const currentActiveBtn = document.querySelector('.tab-btn.active');
+                const currentActiveTab = document.querySelector('.tab-content.active');
+                const nextActiveTab = document.getElementById(`${this.dataset.tab}-content`);
+
+                currentActiveTab.style.transition = 'all 0.4s ease';
+                currentActiveTab.style.opacity = '0';
+                currentActiveTab.style.transform = 'translateY(-20px)';
+
+                setTimeout(() => {
+                    currentActiveBtn.classList.remove('active');
+                    currentActiveTab.classList.remove('active');
+                    
+                    this.classList.add('active');
+                    nextActiveTab.classList.add('active');
+                    
+                    nextActiveTab.style.opacity = '0';
+                    nextActiveTab.style.transform = 'translateY(20px)';
+                    
+                    requestAnimationFrame(() => {
+                        nextActiveTab.style.transition = 'all 0.4s ease';
+                        nextActiveTab.style.opacity = '1';
+                        nextActiveTab.style.transform = 'translateY(0)';
+                    });
+                }, 400);
+            });
+        });
+
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', () => {
+                document.querySelector('.image-popup').src = img.src;
+                document.querySelector('.image-popup').classList.add('active');
+                document.querySelector('.overlay').classList.add('active');
+            });
+        });
+
+        document.querySelector('.overlay').addEventListener('click', () => {
+            document.querySelector('.image-popup').classList.remove('active');
+            document.querySelector('.overlay').classList.remove('active');
+        });
+    </script>
+</body>
+</html>
